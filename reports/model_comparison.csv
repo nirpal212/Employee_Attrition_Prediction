@@ -1,0 +1,4 @@
+model,cv_f1,test_accuracy,test_precision,test_recall,test_f1,test_roc_auc,best_params,true_negative,false_positive,false_negative,true_positive
+Logistic Regression,0.4924,0.7755,0.3827,0.6596,0.4844,0.8051,"{""clf__C"": 0.1}",197,50,16,31
+Decision Tree,0.3764,0.7279,0.3226,0.6383,0.4286,0.6956,"{""clf__max_depth"": 3, ""clf__min_samples_split"": 2}",184,63,17,30
+Random Forest,0.4704,0.8299,0.4717,0.5319,0.5,0.773,"{""clf__max_depth"": 5, ""clf__min_samples_leaf"": 1, ""clf__n_estimators"": 100}",219,28,22,25

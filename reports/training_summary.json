@@ -1,0 +1,313 @@
+{
+  "selected_model": "Logistic Regression",
+  "selection_rule": "Highest StratifiedKFold F1 on the training set after GridSearchCV. The held-out test set was not used to pick the winner.",
+  "cv_f1_by_model": {
+    "Logistic Regression": 0.4924,
+    "Decision Tree": 0.3764,
+    "Random Forest": 0.4704
+  },
+  "selected_test_metrics": {
+    "accuracy": 0.7755,
+    "precision": 0.3827,
+    "recall": 0.6596,
+    "f1": 0.4844,
+    "roc_auc": 0.8051
+  },
+  "dropped_columns": [
+    "EmployeeNumber",
+    "Gender",
+    "EmployeeCount",
+    "Over18",
+    "StandardHours"
+  ],
+  "dropped_column_reasons": {
+    "identifiers": [
+      "EmployeeNumber"
+    ],
+    "sensitive_excluded": [
+      "Gender"
+    ],
+    "constants_detected_on_train": [
+      "EmployeeCount",
+      "Over18",
+      "StandardHours"
+    ]
+  },
+  "numeric_features": [
+    "Age",
+    "DailyRate",
+    "DistanceFromHome",
+    "Education",
+    "EnvironmentSatisfaction",
+    "HourlyRate",
+    "JobInvolvement",
+    "JobLevel",
+    "JobSatisfaction",
+    "MonthlyIncome",
+    "MonthlyRate",
+    "NumCompaniesWorked",
+    "PercentSalaryHike",
+    "PerformanceRating",
+    "RelationshipSatisfaction",
+    "StockOptionLevel",
+    "TotalWorkingYears",
+    "TrainingTimesLastYear",
+    "WorkLifeBalance",
+    "YearsAtCompany",
+    "YearsInCurrentRole",
+    "YearsSinceLastPromotion",
+    "YearsWithCurrManager"
+  ],
+  "categorical_features": [
+    "BusinessTravel",
+    "Department",
+    "EducationField",
+    "JobRole",
+    "MaritalStatus",
+    "OverTime"
+  ],
+  "n_train": 1176,
+  "n_test": 294,
+  "test_size": 0.2,
+  "random_state": 42,
+  "cv_folds": 5,
+  "duplicate_rows_removed": 0,
+  "missing_cells_before_impute": 0,
+  "outlier_investigation": {
+    "Age": {
+      "iqr_outlier_count": 0,
+      "min": 18.0,
+      "max": 60.0,
+      "treatment": "retained (plausible HR range / skewed but informative)"
+    },
+    "DailyRate": {
+      "iqr_outlier_count": 0,
+      "min": 103.0,
+      "max": 1499.0,
+      "treatment": "retained (plausible HR range / skewed but informative)"
+    },
+    "DistanceFromHome": {
+      "iqr_outlier_count": 0,
+      "min": 1.0,
+      "max": 29.0,
+      "treatment": "retained (plausible HR range / skewed but informative)"
+    },
+    "Education": {
+      "iqr_outlier_count": 0,
+      "min": 1.0,
+      "max": 5.0,
+      "treatment": "retained (plausible HR range / skewed but informative)"
+    },
+    "EnvironmentSatisfaction": {
+      "iqr_outlier_count": 0,
+      "min": 1.0,
+      "max": 4.0,
+      "treatment": "retained (plausible HR range / skewed but informative)"
+    },
+    "HourlyRate": {
+      "iqr_outlier_count": 0,
+      "min": 30.0,
+      "max": 100.0,
+      "treatment": "retained (plausible HR range / skewed but informative)"
+    },
+    "JobInvolvement": {
+      "iqr_outlier_count": 0,
+      "min": 1.0,
+      "max": 4.0,
+      "treatment": "retained (plausible HR range / skewed but informative)"
+    },
+    "JobLevel": {
+      "iqr_outlier_count": 0,
+      "min": 1.0,
+      "max": 5.0,
+      "treatment": "retained (plausible HR range / skewed but informative)"
+    },
+    "JobSatisfaction": {
+      "iqr_outlier_count": 0,
+      "min": 1.0,
+      "max": 4.0,
+      "treatment": "retained (plausible HR range / skewed but informative)"
+    },
+    "MonthlyIncome": {
+      "iqr_outlier_count": 86,
+      "min": 1009.0,
+      "max": 19973.0,
+      "treatment": "retained (plausible HR range / skewed but informative)"
+    },
+    "MonthlyRate": {
+      "iqr_outlier_count": 0,
+      "min": 2094.0,
+      "max": 26999.0,
+      "treatment": "retained (plausible HR range / skewed but informative)"
+    },
+    "NumCompaniesWorked": {
+      "iqr_outlier_count": 36,
+      "min": 0.0,
+      "max": 9.0,
+      "treatment": "retained (plausible HR range / skewed but informative)"
+    },
+    "PercentSalaryHike": {
+      "iqr_outlier_count": 0,
+      "min": 11.0,
+      "max": 25.0,
+      "treatment": "retained (plausible HR range / skewed but informative)"
+    },
+    "PerformanceRating": {
+      "iqr_outlier_count": 0,
+      "min": 3.0,
+      "max": 4.0,
+      "treatment": "retained (plausible HR range / skewed but informative)"
+    },
+    "RelationshipSatisfaction": {
+      "iqr_outlier_count": 0,
+      "min": 1.0,
+      "max": 4.0,
+      "treatment": "retained (plausible HR range / skewed but informative)"
+    },
+    "StockOptionLevel": {
+      "iqr_outlier_count": 66,
+      "min": 0.0,
+      "max": 3.0,
+      "treatment": "retained (plausible HR range / skewed but informative)"
+    },
+    "TotalWorkingYears": {
+      "iqr_outlier_count": 52,
+      "min": 0.0,
+      "max": 40.0,
+      "treatment": "retained (plausible HR range / skewed but informative)"
+    },
+    "TrainingTimesLastYear": {
+      "iqr_outlier_count": 174,
+      "min": 0.0,
+      "max": 6.0,
+      "treatment": "retained (plausible HR range / skewed but informative)"
+    },
+    "WorkLifeBalance": {
+      "iqr_outlier_count": 0,
+      "min": 1.0,
+      "max": 4.0,
+      "treatment": "retained (plausible HR range / skewed but informative)"
+    },
+    "YearsAtCompany": {
+      "iqr_outlier_count": 52,
+      "min": 0.0,
+      "max": 37.0,
+      "treatment": "retained (plausible HR range / skewed but informative)"
+    },
+    "YearsInCurrentRole": {
+      "iqr_outlier_count": 16,
+      "min": 0.0,
+      "max": 17.0,
+      "treatment": "retained (plausible HR range / skewed but informative)"
+    },
+    "YearsSinceLastPromotion": {
+      "iqr_outlier_count": 85,
+      "min": 0.0,
+      "max": 15.0,
+      "treatment": "retained (plausible HR range / skewed but informative)"
+    },
+    "YearsWithCurrManager": {
+      "iqr_outlier_count": 10,
+      "min": 0.0,
+      "max": 17.0,
+      "treatment": "retained (plausible HR range / skewed but informative)"
+    }
+  },
+  "class_weight": "balanced",
+  "imbalance_note": "Attrition is the minority class. Models use class_weight='balanced'. Recall is discussed with precision and F1 because missing a likely departure can matter more than a slightly lower accuracy.",
+  "dataset_profile": {
+    "n_rows": 1470,
+    "n_columns": 35,
+    "column_names": [
+      "Age",
+      "Attrition",
+      "BusinessTravel",
+      "DailyRate",
+      "Department",
+      "DistanceFromHome",
+      "Education",
+      "EducationField",
+      "EmployeeCount",
+      "EmployeeNumber",
+      "EnvironmentSatisfaction",
+      "Gender",
+      "HourlyRate",
+      "JobInvolvement",
+      "JobLevel",
+      "JobRole",
+      "JobSatisfaction",
+      "MaritalStatus",
+      "MonthlyIncome",
+      "MonthlyRate",
+      "NumCompaniesWorked",
+      "Over18",
+      "OverTime",
+      "PercentSalaryHike",
+      "PerformanceRating",
+      "RelationshipSatisfaction",
+      "StandardHours",
+      "StockOptionLevel",
+      "TotalWorkingYears",
+      "TrainingTimesLastYear",
+      "WorkLifeBalance",
+      "YearsAtCompany",
+      "YearsInCurrentRole",
+      "YearsSinceLastPromotion",
+      "YearsWithCurrManager"
+    ],
+    "dtypes": {
+      "Age": "int64",
+      "Attrition": "object",
+      "BusinessTravel": "object",
+      "DailyRate": "int64",
+      "Department": "object",
+      "DistanceFromHome": "int64",
+      "Education": "int64",
+      "EducationField": "object",
+      "EmployeeCount": "int64",
+      "EmployeeNumber": "int64",
+      "EnvironmentSatisfaction": "int64",
+      "Gender": "object",
+      "HourlyRate": "int64",
+      "JobInvolvement": "int64",
+      "JobLevel": "int64",
+      "JobRole": "object",
+      "JobSatisfaction": "int64",
+      "MaritalStatus": "object",
+      "MonthlyIncome": "int64",
+      "MonthlyRate": "int64",
+      "NumCompaniesWorked": "int64",
+      "Over18": "object",
+      "OverTime": "object",
+      "PercentSalaryHike": "int64",
+      "PerformanceRating": "int64",
+      "RelationshipSatisfaction": "int64",
+      "StandardHours": "int64",
+      "StockOptionLevel": "int64",
+      "TotalWorkingYears": "int64",
+      "TrainingTimesLastYear": "int64",
+      "WorkLifeBalance": "int64",
+      "YearsAtCompany": "int64",
+      "YearsInCurrentRole": "int64",
+      "YearsSinceLastPromotion": "int64",
+      "YearsWithCurrManager": "int64"
+    },
+    "missing_values_by_column": {},
+    "total_missing_cells": 0,
+    "duplicate_rows": 0,
+    "target_column": "Attrition",
+    "target_classes": [
+      "No",
+      "Yes"
+    ],
+    "class_counts": {
+      "Yes": 237,
+      "No": 1233
+    },
+    "attrition_rate": 0.1612,
+    "source_note": "IBM HR Analytics Employee Attrition & Performance sample. Fictional records created by IBM; not real employees.",
+    "dataset_url": "https://raw.githubusercontent.com/IBM/employee-attrition-aif360/master/data/emp_attrition.csv",
+    "kaggle_url": "https://www.kaggle.com/datasets/pavansubhasht/ibm-hr-analytics-attrition-dataset"
+  },
+  "pipeline_path": "C:\\Users\\vaish\\Employee_Attrition_Prediction\\models\\attrition_pipeline.joblib"
+}

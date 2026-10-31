@@ -1,0 +1,151 @@
+{
+  "n_rows": 1470,
+  "by_OverTime": [
+    {
+      "OverTime": "No",
+      "attrition_rate": 0.1044,
+      "count": 1054,
+      "attrition_count": 110
+    },
+    {
+      "OverTime": "Yes",
+      "attrition_rate": 0.3053,
+      "count": 416,
+      "attrition_count": 127
+    }
+  ],
+  "by_JobRole": [
+    {
+      "JobRole": "Healthcare Representative",
+      "attrition_rate": 0.0687,
+      "count": 131,
+      "attrition_count": 9
+    },
+    {
+      "JobRole": "Human Resources",
+      "attrition_rate": 0.2308,
+      "count": 52,
+      "attrition_count": 12
+    },
+    {
+      "JobRole": "Laboratory Technician",
+      "attrition_rate": 0.2394,
+      "count": 259,
+      "attrition_count": 62
+    },
+    {
+      "JobRole": "Manager",
+      "attrition_rate": 0.049,
+      "count": 102,
+      "attrition_count": 5
+    },
+    {
+      "JobRole": "Manufacturing Director",
+      "attrition_rate": 0.069,
+      "count": 145,
+      "attrition_count": 10
+    },
+    {
+      "JobRole": "Research Director",
+      "attrition_rate": 0.025,
+      "count": 80,
+      "attrition_count": 2
+    },
+    {
+      "JobRole": "Research Scientist",
+      "attrition_rate": 0.161,
+      "count": 292,
+      "attrition_count": 47
+    },
+    {
+      "JobRole": "Sales Executive",
+      "attrition_rate": 0.1748,
+      "count": 326,
+      "attrition_count": 57
+    },
+    {
+      "JobRole": "Sales Representative",
+      "attrition_rate": 0.3976,
+      "count": 83,
+      "attrition_count": 33
+    }
+  ],
+  "by_Department": [
+    {
+      "Department": "Human Resources",
+      "attrition_rate": 0.1905,
+      "count": 63,
+      "attrition_count": 12
+    },
+    {
+      "Department": "Research & Development",
+      "attrition_rate": 0.1384,
+      "count": 961,
+      "attrition_count": 133
+    },
+    {
+      "Department": "Sales",
+      "attrition_rate": 0.2063,
+      "count": 446,
+      "attrition_count": 92
+    }
+  ],
+  "by_JobSatisfaction": [
+    {
+      "JobSatisfaction": 1,
+      "attrition_rate": 0.2284,
+      "count": 289,
+      "attrition_count": 66
+    },
+    {
+      "JobSatisfaction": 2,
+      "attrition_rate": 0.1643,
+      "count": 280,
+      "attrition_count": 46
+    },
+    {
+      "JobSatisfaction": 3,
+      "attrition_rate": 0.1652,
+      "count": 442,
+      "attrition_count": 73
+    },
+    {
+      "JobSatisfaction": 4,
+      "attrition_rate": 0.1133,
+      "count": 459,
+      "attrition_count": 52
+    }
+  ],
+  "by_YearsAtCompanyBand": [
+    {
+      "YearsAtCompanyBand": "0-2",
+      "attrition_rate": 0.2982,
+      "count": 342,
+      "attrition_count": 102
+    },
+    {
+      "YearsAtCompanyBand": "3-5",
+      "attrition_rate": 0.1382,
+      "count": 434,
+      "attrition_count": 60
+    },
+    {
+      "YearsAtCompanyBand": "6-10",
+      "attrition_rate": 0.1228,
+      "count": 448,
+      "attrition_count": 55
+    },
+    {
+      "YearsAtCompanyBand": "11-20",
+      "attrition_rate": 0.0667,
+      "count": 180,
+      "attrition_count": 12
+    },
+    {
+      "YearsAtCompanyBand": "21+",
+      "attrition_rate": 0.1212,
+      "count": 66,
+      "attrition_count": 8
+    }
+  ]
+}
