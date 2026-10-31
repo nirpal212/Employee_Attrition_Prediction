@@ -2,10 +2,6 @@
 
 A Machine Learning project that predicts employee attrition using IBM’s fictional HR Analytics dataset and presents insights through an interactive Streamlit dashboard.
 
-**Student:** Vaishnavi Nirpal  
-**Course:** Third-Year B.Tech CSE  
-**Project Type:** Individual ML Project
-
 ## Features
 - Exploratory Data Analysis
 - Data preprocessing and feature engineering
