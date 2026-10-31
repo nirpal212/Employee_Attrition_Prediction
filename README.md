@@ -1,176 +1,209 @@
 # Employee Attrition Prediction & HR Analytics
 
 **Student:** Vaishnavi Nirpal  
-**Roll number:** CS3234  
+**Roll Number:** CS3234  
 **Course:** Third-Year B.Tech Computer Science and Engineering  
-**Type:** Individual Machine Learning project
+**Project Type:** Individual Machine Learning Project
 
-A working binary-classification app that estimates whether an employee profile in IBM’s **fictional** HR sample would be labelled Attrition = Yes. The project covers dataset inspection, preprocessing, EDA, three Scikit-learn models, evaluation, a Streamlit dashboard, tests, and deployment notes.
+An end-to-end binary-classification project that estimates whether an employee profile in IBM’s **fictional HR sample dataset** would be labelled `Attrition = Yes`. The project includes dataset inspection, preprocessing, exploratory data analysis (EDA), three Scikit-learn models, model evaluation, a Streamlit dashboard, automated tests, and deployment instructions.
 
-Predictions are statistical estimates from this sample. They are **not** guarantees about any person and must **not** be used to hire, fire, or otherwise decide employment.
+> **Responsible use:** Predictions are statistical estimates based on a fictional sample. They are not guarantees about any person and must not be used to hire, fire, or otherwise make employment decisions.
 
 ## Aim
 
-Build an end-to-end, beginner-explainable machine-learning pipeline for employee attrition classification and present dataset analytics plus individual estimates in a professional dashboard.
+To build an end-to-end, beginner-explainable machine-learning pipeline for employee attrition classification and present dataset analytics and individual estimates through a professional dashboard.
 
 ## Objectives
 
-1. Load and validate a public IBM HR sample with an `Attrition` target.
-2. Inspect real row counts, types, missing values, duplicates, and class balance.
-3. Preprocess mixed features in a Scikit-learn `Pipeline` without leaking the test set.
-4. Compare Logistic Regression, Decision Tree, and Random Forest.
-5. Tune on training folds using F1, then report held-out test metrics.
-6. Serve analytics and form-based predictions in Streamlit.
+1. Load and validate a public IBM HR sample dataset containing an `Attrition` target.
+2. Inspect row counts, data types, missing values, duplicates, and class balance.
+3. Preprocess mixed numerical and categorical features using a Scikit-learn `Pipeline` without data leakage.
+4. Compare Logistic Regression, Decision Tree, and Random Forest classifiers.
+5. Tune models using training folds and F1-score, then report held-out test metrics.
+6. Display analytics and form-based predictions through Streamlit.
 
-## Problem statement
+## Problem Statement
 
-Human-resources teams care about people leaving (attrition). This academic project asks: given job, pay, and tenure attributes in IBM’s sample table, can a classifier estimate whether a record is labelled **Yes** (left) or **No** (stayed)?
+Employee attrition refers to employees leaving an organization. This academic project investigates whether job, pay, and tenure attributes in IBM’s sample dataset can help a classifier estimate whether a record is labelled **Yes** (left) or **No** (stayed).
 
-Real-world motivation is only analogical. The CSV is **synthetic**. Nothing in this repository is a finding about a real workforce.
+The real-world motivation is illustrative only. The CSV is a fictional sample, and this repository does not present findings about a real workforce.
 
-## Dataset source
+## Dataset Source
 
 | Item | Value |
-| --- | --- |
-| Name | IBM HR Analytics Employee Attrition & Performance |
+|---|---|
+| Dataset name | IBM HR Analytics Employee Attrition & Performance |
 | Nature | Fictional sample created by IBM data scientists |
-| Training download | https://raw.githubusercontent.com/IBM/employee-attrition-aif360/master/data/emp_attrition.csv |
-| IBM repository | https://github.com/IBM/employee-attrition-aif360 |
-| Kaggle listing | https://www.kaggle.com/datasets/pavansubhasht/ibm-hr-analytics-attrition-dataset |
+| Training download | [IBM sample CSV](https://raw.githubusercontent.com/IBM/employee-attrition-aif360/master/data/emp_attrition.csv) |
+| IBM repository | [IBM employee-attrition-aif360](https://github.com/IBM/employee-attrition-aif360) |
+| Kaggle listing | [IBM HR Analytics Attrition Dataset](https://www.kaggle.com/datasets/pavansubhasht/ibm-hr-analytics-attrition-dataset) |
 | Local file | `Dataset/WA_Fn-UseC_-HR-Employee-Attrition.csv` |
 
-If download fails, copy the Kaggle CSV into `Dataset/` using that filename, or change `DATASET_PATH` in `config.py`.
+If the download fails, place the Kaggle CSV in the `Dataset/` directory using the filename above, or update `DATASET_PATH` in `config.py`.
 
-## Dataset description (measured from the file on disk)
+## Dataset Description
 
-These figures come from `python -m src.train_model` reading the actual CSV. They are not copied from a blog.
+The following figures were measured from the local CSV by the project’s data-loading and training workflow.
 
 | Property | Measured value |
-| --- | --- |
-| Rows | 1470 |
+|---|---:|
+| Rows | 1,470 |
 | Columns | 35 |
 | Target | `Attrition` (`Yes` / `No`) |
-| Class counts | Yes = 237, No = 1233 |
+| Employees labelled Yes | 237 |
+| Employees labelled No | 1,233 |
 | Attrition rate | 16.12% |
 | Missing cells | 0 |
 | Duplicate rows | 0 |
 
-Columns include Age, BusinessTravel, DailyRate, Department, DistanceFromHome, Education, EducationField, EmployeeCount, EmployeeNumber, EnvironmentSatisfaction, Gender, HourlyRate, JobInvolvement, JobLevel, JobRole, JobSatisfaction, MaritalStatus, MonthlyIncome, MonthlyRate, NumCompaniesWorked, Over18, OverTime, PercentSalaryHike, PerformanceRating, RelationshipSatisfaction, StandardHours, StockOptionLevel, TotalWorkingYears, TrainingTimesLastYear, WorkLifeBalance, YearsAtCompany, YearsInCurrentRole, YearsSinceLastPromotion, YearsWithCurrManager, and Attrition.
+The dataset includes attributes such as Age, BusinessTravel, DailyRate, Department, DistanceFromHome, Education, EducationField, EnvironmentSatisfaction, JobInvolvement, JobLevel, JobRole, JobSatisfaction, MaritalStatus, MonthlyIncome, NumCompaniesWorked, OverTime, PerformanceRating, RelationshipSatisfaction, StockOptionLevel, TotalWorkingYears, TrainingTimesLastYear, WorkLifeBalance, YearsAtCompany, and Attrition.
 
-## Feature and target selection
+## Feature and Target Selection
 
-- **Target:** `Attrition` mapped to 1 (Yes / left) and 0 (No / stayed).
-- **Dropped before modelling (with reasons):**
+- **Target:** `Attrition` is mapped to `1` for Yes (left) and `0` for No (stayed).
+- **Dropped columns:**
   - `EmployeeNumber` — identifier, not a job attribute.
-  - `Gender` — protected characteristic; excluded on purpose for this academic demo.
-  - `EmployeeCount`, `Over18`, `StandardHours` — constant on the training split, so they cannot help a classifier.
-- **Remaining inputs:** 23 numeric columns and 6 categorical columns (`BusinessTravel`, `Department`, `EducationField`, `JobRole`, `MaritalStatus`, `OverTime`).
-- The target is never used as a prediction input.
+  - `Gender` — excluded as a protected characteristic for this academic demonstration.
+  - `EmployeeCount`, `Over18`, and `StandardHours` — constant columns that provide no useful variation for classification.
+- **Remaining inputs:** 23 numerical columns and 6 categorical columns:
+  `BusinessTravel`, `Department`, `EducationField`, `JobRole`, `MaritalStatus`, and `OverTime`.
+- The target column is never used as a prediction input.
 
-## Preprocessing decisions
+## Preprocessing Decisions
 
-- Missing values: none in this file; the pipeline still median-imputes numbers and most-frequent-imputes categories so new rows with blanks do not crash the app.
-- Duplicates: none found; the trainer would drop them if they appeared.
-- Outliers: IQR counts were computed on **training** numeric columns. High-income and long-tenure tails are expected in HR data. **No rows were deleted.** Examples on train: MonthlyIncome 86 IQR flags (1009–19973), TotalWorkingYears 52 flags (0–40), YearsAtCompany 52 flags (0–37).
-- Encoding: `OneHotEncoder(handle_unknown='ignore')` so unseen categories become zeros instead of errors.
-- Scaling: `StandardScaler` on numeric columns (required for logistic regression; trees are unaffected).
-- Leakage control: `train_test_split` first (stratified). Imputers, scaler, encoder, and GridSearchCV see **training data only**.
-- Imbalance: `class_weight='balanced'` inside each classifier. This reweights the minority class using training-fold frequencies. It does not invent synthetic employees.
+- **Missing values:** None were found in the supplied dataset. The pipeline still uses median imputation for numerical features and most-frequent imputation for categorical features.
+- **Duplicates:** None were found. The training workflow removes duplicates if they occur.
+- **Outliers:** IQR-based counts were calculated on training numerical columns. High-income and long-tenure values were treated as plausible data tails; no rows were deleted. Examples from the training data include:
+  - `MonthlyIncome`: 86 IQR flags (1,009–19,973)
+  - `TotalWorkingYears`: 52 IQR flags (0–40)
+  - `YearsAtCompany`: 52 IQR flags (0–37)
+- **Encoding:** `OneHotEncoder(handle_unknown="ignore")` handles categorical features and unseen categories.
+- **Scaling:** `StandardScaler` is applied to numerical features. This is useful for Logistic Regression; tree-based models do not require feature scaling.
+- **Leakage control:** The data is split using stratified `train_test_split` before fitting preprocessing steps. Imputers, scaler, encoder, and `GridSearchCV` are fitted using training data only.
+- **Class imbalance:** Each classifier uses `class_weight="balanced"` to reweight the minority class based on training-fold frequencies. No synthetic employee records are created.
 
-## EDA findings (computed from all 1470 rows)
+## Exploratory Data Analysis Findings
 
-- The sample is imbalanced: 237 leavers vs 1233 stayers.
-- **Overtime:** attrition rate 30.53% when OverTime = Yes vs 10.44% when No.
-- **Department:** Sales 20.63%, Human Resources 19.05%, Research & Development 13.84%.
-- **Job role:** highest rate Sales Representative 39.76%; lowest Research Director 2.50%.
-- **Job satisfaction:** rate 22.84% at score 1 vs 11.33% at score 4.
-- **Years at company:** 29.82% in the 0–2 year band vs 6.67% in 11–20 years.
+The following patterns were calculated from all 1,470 rows in the IBM sample:
 
-These numbers describe this IBM file only.
+- The dataset is imbalanced: 237 records are labelled Yes and 1,233 are labelled No.
+- **Overtime:** Attrition rate was 30.53% for employees with overtime and 10.44% for employees without overtime.
+- **Department:** Sales 20.63%, Human Resources 19.05%, and Research & Development 13.84%.
+- **Job role:** Sales Representative had the highest rate at 39.76%; Research Director had the lowest at 2.50%.
+- **Job satisfaction:** Attrition rate was 22.84% for satisfaction score 1 and 11.33% for score 4.
+- **Years at company:** Attrition rate was 29.82% in the 0–2 year band and 6.67% in the 11–20 year band.
 
-## Algorithms and parameters
+These observations describe this IBM sample only. They do not establish causation or describe a real organization.
 
-All three models use `random_state=42` and `class_weight='balanced'`.
+## Algorithms and Hyperparameters
+
+All three models use `random_state=42` and `class_weight="balanced"`.
 
 | Model | Search space | Selected hyperparameters |
-| --- | --- | --- |
+|---|---|---|
 | Logistic Regression | `C ∈ {0.1, 1.0, 10.0}` | `C=0.1`, `max_iter=1000` |
-| Decision Tree | `max_depth ∈ {3,5,8,None}`, `min_samples_split ∈ {2,10}` | `max_depth=3`, `min_samples_split=2` |
-| Random Forest | `n_estimators ∈ {100,200}`, `max_depth ∈ {5,10,None}`, `min_samples_leaf ∈ {1,4}` | `n_estimators=100`, `max_depth=5`, `min_samples_leaf=1` |
+| Decision Tree | `max_depth ∈ {3, 5, 8, None}`, `min_samples_split ∈ {2, 10}` | `max_depth=3`, `min_samples_split=2` |
+| Random Forest | `n_estimators ∈ {100, 200}`, `max_depth ∈ {5, 10, None}`, `min_samples_leaf ∈ {1, 4}` | `n_estimators=100`, `max_depth=5`, `min_samples_leaf=1` |
 
-Tuning used 5-fold **StratifiedKFold** on the training set, scoring **F1**.
+Hyperparameter tuning used 5-fold `StratifiedKFold` cross-validation on the training set, with **F1-score** as the scoring metric.
 
-## Train-test split
+## Train-Test Split
 
-- 80% train / 20% test, `stratify=y`, `random_state=42`
-- Train rows: 1176
-- Test rows: 294
-- Positive (Yes) class remains about 16% in both splits
+- Split: 80% training and 20% testing
+- Stratification: `stratify=y`
+- Random seed: `random_state=42`
+- Training rows: 1,176
+- Testing rows: 294
+- The positive class remains approximately 16% in both sets.
 
-## Model comparison (held-out test set)
+## Model Comparison
 
-Saved in `reports/model_comparison.csv`. CV F1 is the selection score; test columns are reported after selection.
+The results are saved in `reports/model_comparison.csv`. Cross-validation F1 was used for model selection; test metrics were reported after selection.
 
-| Model | CV F1 | Test accuracy | Test precision | Test recall | Test F1 | Test ROC-AUC |
-| --- | --- | --- | --- | --- | --- | --- |
+| Model | CV F1 | Test Accuracy | Test Precision | Test Recall | Test F1 | Test ROC-AUC |
+|---|---:|---:|---:|---:|---:|---:|
 | Logistic Regression | **0.4924** | 0.7755 | 0.3827 | **0.6596** | 0.4844 | **0.8051** |
 | Decision Tree | 0.3764 | 0.7279 | 0.3226 | 0.6383 | 0.4286 | 0.6956 |
-| Random Forest | 0.4704 | 0.8299 | 0.4717 | 0.5319 | 0.5000 | 0.7730 |
+| Random Forest | 0.4704 | **0.8299** | **0.4717** | 0.5319 | **0.5000** | 0.7730 |
 
-Selected-model test confusion matrix (Logistic Regression): TN 197, FP 50, FN 16, TP 31.
+Selected-model test confusion matrix for Logistic Regression:
 
-Accuracy alone would favour Random Forest (0.8299). Attrition work also cares about **recall** (finding people who left). Logistic Regression had the best **cross-validated F1** and the highest test recall and ROC-AUC in this run.
+| | Predicted No | Predicted Yes |
+|---|---:|---:|
+| Actual No | TN = 197 | FP = 50 |
+| Actual Yes | FN = 16 | TP = 31 |
 
-## Final model-selection justification
+Accuracy alone favours Random Forest in this test run. Attrition analysis may also value recall because it measures how many actual positive records are identified.
 
-**Winner: Logistic Regression (`C=0.1`).**
+## Final Model Selection
 
-Rule used: highest StratifiedKFold F1 on the training set after GridSearchCV. The test set was **not** used to pick the winner. Random Forest had a slightly higher test F1 (0.5000 vs 0.4844) but a lower CV F1 (0.4704 vs 0.4924). Sticking to the CV rule keeps the test numbers an honest check.
+**Selected model: Logistic Regression (`C=0.1`)**
 
-## Model improvement experiments
+The selection rule was the highest 5-fold StratifiedKFold F1-score on the training data after `GridSearchCV`. The test set was not used to select the winning model.
 
-1. Shared `ColumnTransformer` so every algorithm saw the same encoded matrix.
-2. `class_weight='balanced'` vs a naive majority classifier (majority accuracy would be ~83.9% by always predicting No, with recall 0 — rejected).
-3. GridSearchCV on F1 rather than accuracy so the minority class mattered during tuning.
-4. Small hyperparameter grids (see table) comparing baseline defaults to tuned settings; the saved pipeline is the tuned refit model.
-5. Feature filtering: identifiers, constants, and Gender removed; remaining columns kept.
+Random Forest achieved a slightly higher test F1-score (0.5000 compared with 0.4844), but Logistic Regression had the higher cross-validated F1-score (0.4924 compared with 0.4704), as well as higher test recall and ROC-AUC in this run. Following the cross-validation selection rule keeps the test set as an independent evaluation.
 
-The fitted preprocessing + classifier pipeline is stored at `models/attrition_pipeline.joblib`.
+## Model Improvement Experiments
 
-## Frontend
+1. Used a shared `ColumnTransformer` so all algorithms received the same encoded feature matrix.
+2. Used `class_weight="balanced"` to address class imbalance instead of relying on a majority-class classifier.
+3. Tuned models using F1-score rather than accuracy, giving more attention to the minority class.
+4. Compared baseline and tuned settings using small, explainable hyperparameter grids.
+5. Removed identifiers, constant columns, and Gender while retaining the remaining selected features.
 
-`app.py` is a Streamlit dashboard (navy / teal, light background, sidebar):
+The fitted preprocessing and classifier pipeline is stored at:
 
-- **Home** — project summary, dataset status, model status
-- **HR Analytics** — counts and charts from the CSV (not from the model)
-- **Predict Attrition** — form generated from `models/feature_schema.json`; calls the joblib pipeline
-- **Model Performance** — comparison table, confusion matrix, coefficient magnitudes, metric explanations
-- **About** — aim, dataset, pipeline, limitations
+`models/attrition_pipeline.joblib`
 
-If the CSV or the model file is missing, the UI shows setup instructions instead of invented scores.
+## Streamlit Application
 
-## Project folder structure
+The project uses `app.py` to provide a Streamlit dashboard with a navy and teal theme and a light background.
 
-```
+- **Home:** Project summary, dataset status, and model status.
+- **HR Analytics:** Counts and charts generated from the CSV, not from model predictions.
+- **Predict Attrition:** Form generated from `models/feature_schema.json`; submits a profile to the saved pipeline.
+- **Model Performance:** Model comparison table, confusion matrix, coefficient magnitudes, and metric explanations.
+- **About:** Aim, dataset information, pipeline, and limitations.
+
+If the dataset or model file is missing, the application displays setup instructions rather than fabricated scores.
+
+## Project Folder Structure
+
+```text
 Employee_Attrition_Prediction/
-    app.py
-    config.py
-    requirements.txt
-    README.md
-    .gitignore
-    Dataset/          # IBM sample CSV
-    notebooks/        # EDA notebook (uses src/)
-    src/              # load, preprocess, train, evaluate, predict, plots
-    models/           # joblib pipeline + feature schema
-    reports/          # metrics, EDA JSON, academic report
-    tests/
+├── app.py
+├── config.py
+├── requirements.txt
+├── README.md
+├── .gitignore
+├── Dataset/
+│   └── WA_Fn-UseC_-HR-Employee-Attrition.csv
+├── notebooks/
+│   └── EDA notebook
+├── src/
+│   ├── data loading
+│   ├── preprocessing
+│   ├── model training
+│   ├── evaluation
+│   ├── prediction
+│   └── visualizations
+├── models/
+│   ├── attrition_pipeline.joblib
+│   └── feature_schema.json
+├── reports/
+│   ├── model comparison
+│   ├── EDA results
+│   └── academic report
+└── tests/
 ```
 
-How modules connect: `config.py` holds paths → `data_loader.py` reads the CSV → `preprocessing.py` builds the ColumnTransformer → `train_model.py` fits three pipelines and writes reports → `predict.py` loads the winner → `app.py` displays analytics and scores one form row → `visualizations.py` draws charts.
+### Module Workflow
+
+`config.py` defines paths and settings → `data_loader.py` reads and validates the CSV → `preprocessing.py` builds the `ColumnTransformer` → `train_model.py` trains and compares three pipelines and writes reports → `predict.py` loads the selected model → `app.py` displays analytics and predicts from a form → `visualizations.py` creates charts for the app and notebook.
 
 ## Installation
 
-PowerShell, from the project folder:
+Run these commands in PowerShell from the project folder.
 
 ```powershell
 cd C:\Users\vaish\Employee_Attrition_Prediction
@@ -179,86 +212,101 @@ python -m venv .venv
 python -m pip install -r requirements.txt
 ```
 
-## Inspect the dataset
+## Inspect the Dataset
 
 ```powershell
 .\.venv\Scripts\python -c "from src.data_loader import load_dataset, profile_dataset; import json; print(json.dumps(profile_dataset(load_dataset()), indent=2))"
 ```
 
-## Train
+## Train the Models
 
 ```powershell
 .\.venv\Scripts\python -m src.train_model
 ```
 
-This downloads the IBM sample if the CSV is missing, trains the three models, and writes `models/` and `reports/`.
+The training workflow downloads the IBM sample if the CSV is missing, trains and evaluates the three models, and writes the model and report files.
 
-## Tests
+## Run Tests
 
 ```powershell
 .\.venv\Scripts\python -m pytest -q
 ```
 
-Last run on this machine: **10 passed**.
+**Last recorded test run:** 10 passed.
 
-## Launch the app
+## Launch the Application
 
 ```powershell
 .\.venv\Scripts\python -m streamlit run app.py
 ```
 
-Then open the Local URL printed in the terminal (usually http://localhost:8501).
+Open the Local URL printed in the terminal, usually:
 
-## GitHub publishing (not done from this session)
+[http://localhost:8501](http://localhost:8501)
 
-Git was not available on the PATH of this PC when the project was built, so **no GitHub upload was performed**. After installing [Git for Windows](https://git-scm.com/download/win):
+## GitHub Repository
 
-```powershell
-cd C:\Users\vaish\Employee_Attrition_Prediction
-git init
-git add .
-git commit -m "Add employee attrition prediction ML project"
-gh repo create Employee_Attrition_Prediction --private --source=. --push
+The project repository is available here:
+
+[Employee Attrition Prediction & HR Analytics on GitHub](https://github.com/nirpal212/Employee_Attrition_Prediction)
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/nirpal212/Employee_Attrition_Prediction.git
+cd Employee_Attrition_Prediction
 ```
 
-Do not commit `.venv/`, `.streamlit/secrets.toml`, or personal secrets. The IBM sample CSV and the trained joblib file may be committed so Streamlit Community Cloud can run without retraining.
+### Push Local Updates
 
-## Streamlit Community Cloud
+If the repository is already connected to the local project, use:
 
-1. Push the repo to GitHub.
-2. At https://share.streamlit.io choose the repo, branch, and main file `app.py`.
-3. The Cloud installer reads `requirements.txt`.
-4. Keep `Dataset/WA_Fn-UseC_-HR-Employee-Attrition.csv` and `models/attrition_pipeline.joblib` in the repo, or the app will show the setup message.
+```bash
+git status
+git add .
+git commit -m "Update Employee Attrition Prediction project"
+git push
+```
 
-This project has **not** been deployed to Streamlit Cloud from this session.
+Do not commit `.venv/`, `.streamlit/secrets.toml`, or personal secrets. Review the `.gitignore` file before uploading changes.
+
+## Streamlit Community Cloud Deployment
+
+The project has **not yet been deployed** to Streamlit Community Cloud.
+
+1. Push the project to GitHub.
+2. Open [Streamlit Community Cloud](https://share.streamlit.io).
+3. Select the repository, branch, and main file `app.py`.
+4. Streamlit Cloud installs dependencies from `requirements.txt`.
+5. Keep the dataset and `models/attrition_pipeline.joblib` in the repository, or the app will display a setup message.
 
 ## Screenshots
 
-After `streamlit run app.py`, capture:
+After running the application, capture:
 
-1. Home with Dataset Ready and selected model Logistic Regression
-2. HR Analytics KPI row (1470 records, 237 Yes, 16.1% rate)
-3. Prediction form result (Attrition Yes/No plus probability)
-4. Model Performance table matching `reports/model_comparison.csv`
+1. Home page showing dataset readiness and selected model.
+2. HR Analytics KPI row showing 1,470 records, 237 Yes records, and a 16.1% attrition rate.
+3. Prediction form showing an Attrition Yes/No result and probability.
+4. Model Performance page showing the comparison table and confusion matrix.
 
-## Limitations and future scope
+## Limitations and Future Scope
 
-- The dataset is fictional; coefficients describe IBM’s generator, not a company.
-- Gender is excluded; Age and other attributes can still proxy protected traits.
-- Logistic Regression with balanced weights raises recall and lowers precision/accuracy versus always predicting No.
-- No causal claims. Overtime correlates with attrition in this file; it does not prove overtime causes quits.
-- Future work: cost-sensitive thresholds, calibration plots, organisation-specific real data under an ethics review, and excluding additional sensitive fields.
+- The dataset is fictional; model coefficients describe patterns in this IBM sample, not a real company.
+- Gender is excluded, but Age and other attributes may still act as proxies for protected characteristics.
+- Balanced Logistic Regression increases attention to the minority class but may produce false positives and lower accuracy than always predicting No.
+- The analysis does not establish causal relationships. For example, overtime is associated with attrition in this file, but this does not prove that overtime causes employees to leave.
+- Future work could include cost-sensitive thresholds, probability calibration, organization-specific data under an ethics review, and excluding additional sensitive fields.
 
-## Viva map (what to say for each module)
+## Viva Preparation
 
-| File | One-sentence purpose |
-| --- | --- |
-| `config.py` | Paths, random seed, target name |
-| `src/data_loader.py` | Read/validate CSV; never invent rows |
-| `src/preprocessing.py` | Drop bad columns; impute, scale, one-hot |
-| `src/train_model.py` | Split, tune, compare, save pipeline |
-| `src/evaluate_model.py` | Accuracy, precision, recall, F1, ROC-AUC, confusion matrix |
-| `src/predict.py` | Load joblib; score a form row |
-| `src/visualizations.py` | Charts for the app and notebook |
-| `app.py` | Streamlit pages |
-| `tests/` | Missing-file errors, schema order, prediction shape |
+| File or module | One-sentence purpose |
+|---|---|
+| `config.py` | Stores paths, random seed, and target name. |
+| `src/data_loader.py` | Reads and validates the dataset without inventing rows. |
+| `src/preprocessing.py` | Drops unsuitable columns and applies imputation, scaling, and one-hot encoding. |
+| `src/train_model.py` | Splits data, tunes models, compares results, and saves the selected pipeline. |
+| `src/evaluate_model.py` | Calculates accuracy, precision, recall, F1, ROC-AUC, and confusion matrix. |
+| `src/predict.py` | Loads the saved pipeline and predicts from a form row. |
+| `src/visualizations.py` | Creates charts for the dashboard and notebook. |
+| `app.py` | Runs the Streamlit application pages. |
+| `tests/` | Checks missing-file errors, schema order, and prediction output shape. |
